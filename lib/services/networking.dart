@@ -9,8 +9,7 @@ class NetworkHelper {
   NetworkHelper();
   final String url = 'http://192.168.43.17:3000/users';
   final String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWM1MzAxZDVmYTIxOTFhZjU2YTRlMTYiLCJpYXQiOjE1OTE3MjE1MjZ9.8PQS7y4bBle-fiqena2FjKWspp11RuuNntmQ7gymAP8';
-
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWM1MzAxZDVmYTIxOTFhZjU2YTRlMTYiLCJpYXQiOjE1OTI5MTM2NTh9.-oxVwq4PpBE3wmZ9WsNkMYyadfvS7k-QMiRtn6pIG34';
   Future<User> createUser(
       String name, String password, String email, String age) async {
     final http.Response response = await http.post(url,
@@ -122,7 +121,10 @@ class NetworkHelper {
 
   Future<User> changeName(String name) async {
     final http.Response response = await http.patch(url + '/me',
-        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        },
         body: jsonEncode(
           <String, String>{
             'name': name,
@@ -131,13 +133,37 @@ class NetworkHelper {
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       return User.fromJson(json.decode(response.body));
     } else {
       print('failed');
       throw Exception('Failed to change user name');
+    }
+  }
+
+  Future<User> changeEmail(String email) async {
+    final http.Response response = await http.patch(url + '/me',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        },
+        body: jsonEncode(
+          <String, String>{
+            'email': email,
+          },
+        ));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return User.fromJson(json.decode(response.body));
+    } else {
+      print('failed');
+      throw Exception('Failed to change user email');
     }
   }
 }

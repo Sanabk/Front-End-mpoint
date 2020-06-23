@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meetme/components/rounded_button.dart';
 import 'package:meetme/models/user.dart';
+import 'package:meetme/screens/personal_infos_screen.dart';
 import 'package:meetme/services/networking.dart';
 
 import 'account_screen.dart';
@@ -17,6 +20,12 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
   Future<User> futureUser;
   NetworkHelper networkHelper = NetworkHelper();
   final TextEditingController _controllerEmail = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    futureUser = networkHelper.fetchUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Icon(Icons.face),
+                              child: Icon(Icons.alternate_email),
                             ),
                           ),
                           TextSpan(
@@ -73,21 +82,27 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                   title: 'Submit Change',
                   colour: Colors.lightBlueAccent,
                   onPressed: () {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: <Widget>[
+                            Icon(Icons.thumb_up),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text('Email changed with success.'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                     setState(() {
                       futureUser =
-                          networkHelper.changeName(_controllerEmail.text);
+                          networkHelper.changeEmail(_controllerEmail.text);
                     });
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Result: ${snapshot.data.name}',
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
-                  ),
-                )
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -96,10 +111,6 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                   color: Colors.red,
                   size: 60,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Error: ${snapshot.error}'),
-                )
               ];
             } else {
               children = <Widget>[

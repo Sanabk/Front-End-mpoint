@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meetme/components/rounded_button.dart';
 import 'package:meetme/models/user.dart';
+import 'package:meetme/screens/personal_infos_screen.dart';
 import 'package:meetme/services/networking.dart';
 
 import '../constants.dart';
@@ -77,21 +78,27 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
                   title: 'Submit Change',
                   colour: Colors.lightBlueAccent,
                   onPressed: () {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: <Widget>[
+                            Icon(Icons.thumb_up),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text('Name changed with success.'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                     setState(() {
                       futureUser =
                           networkHelper.changeName(_controllername.text);
                     });
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Result: ${snapshot.data.age}',
-                    style: TextStyle(
-                      color: Colors.red,
-                    ),
-                  ),
-                )
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[
