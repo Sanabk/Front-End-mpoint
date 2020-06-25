@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meetme/models/user.dart';
+import 'package:meetme/screens/change_password-screen.dart';
+import 'package:meetme/screens/welcome_screen.dart';
+import 'package:meetme/services/networking.dart';
 
 import 'account_screen.dart';
 
@@ -11,19 +15,26 @@ class SecurityLoginScreen extends StatefulWidget {
 }
 
 class _SecurityLoginScreenState extends State<SecurityLoginScreen> {
+  Future<User> _futureUser;
+
+  NetworkHelper networkHelper = NetworkHelper();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Meet Me'),
+          title: const Text('Orbit'),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.account_circle),
-              tooltip: 'My Account',
-              onPressed: () {
-                Navigator.pushNamed(context, AccountScreen.id);
-              },
+            Align(
+              alignment: Alignment.center,
+              child: IconButton(
+                icon: const Icon(Icons.account_circle),
+                tooltip: 'My Account',
+                onPressed: () {
+                  Navigator.pushNamed(context, AccountScreen.id);
+                },
+              ),
             ),
           ],
         ),
@@ -78,12 +89,12 @@ class _SecurityLoginScreenState extends State<SecurityLoginScreen> {
                   child: FlatButton.icon(
                     onPressed: () {
                       setState(() {
-//                        Navigator.pushNamed(context, ChangeNameScreen.id);
+                        Navigator.pushNamed(context, ChangePasswordScreen.id);
                       });
                     },
-                    icon: Icon(Icons.face),
+                    icon: Icon(Icons.vpn_key),
                     label: Text(
-                      "Name",
+                      "Password",
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontSize: 20.0,
@@ -95,7 +106,7 @@ class _SecurityLoginScreenState extends State<SecurityLoginScreen> {
                 Container(
                   alignment: Alignment(-0.75, -0.75),
                   child: Text(
-                    "Change your name",
+                    "Change your password",
                     style: TextStyle(
                         fontSize: 12.0,
                         letterSpacing: 2.5,
@@ -111,12 +122,13 @@ class _SecurityLoginScreenState extends State<SecurityLoginScreen> {
                   child: FlatButton.icon(
                     onPressed: () {
                       setState(() {
-//                        Navigator.pushNamed(context, ChangeEmailScreen.id);
+                        _futureUser = networkHelper.logoutAll();
+                        Navigator.pushNamed(context, WelcomeScreen.id);
                       });
                     },
-                    icon: Icon(Icons.alternate_email),
+                    icon: Icon(Icons.exit_to_app),
                     label: Text(
-                      "Email",
+                      "Log Out All",
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontSize: 20.0,
@@ -128,7 +140,7 @@ class _SecurityLoginScreenState extends State<SecurityLoginScreen> {
                 Container(
                   alignment: Alignment(-0.75, -0.75),
                   child: Text(
-                    "Change your email",
+                    "Log out of all devices",
                     style: TextStyle(
                         fontSize: 12.0,
                         letterSpacing: 2.5,

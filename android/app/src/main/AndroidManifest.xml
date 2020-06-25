@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="sanabk.meetme">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -6,15 +7,17 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="meetme"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Orbit"
+        android:icon="@mipmap/ic_launcher"
+        tools:ignore="Instantiatable">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -25,5 +28,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            <meta-data android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyDt0B6vq-6Vz2XnehA_EbR8F7DPCuc1nqc"/>
     </application>
 </manifest>

@@ -17,6 +17,8 @@ dependencies:
   animated_text_kit: ^2.0.1
   string_validator: ^0.1.4
   geolocator: ^5.3.1
+  google_maps_flutter: ^0.5.28+1
+
 
 
 
@@ -31,7 +33,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/
+    - images/orbit.png
 
 
   fonts:

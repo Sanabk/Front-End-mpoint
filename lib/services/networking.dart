@@ -9,7 +9,7 @@ class NetworkHelper {
   NetworkHelper();
   final String url = 'http://192.168.43.17:3000/users';
   final String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWM1MzAxZDVmYTIxOTFhZjU2YTRlMTYiLCJpYXQiOjE1OTI5MTM2NTh9.-oxVwq4PpBE3wmZ9WsNkMYyadfvS7k-QMiRtn6pIG34';
+      'yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWYyMDk0ZTIyYjM5NjQ0NzYzZjllM2UiLCJpYXQiOjE1OTI5MjA0NzR9.FJsIQeSD4ynir1ZGUl1uASjDLmge6VKBCYqTSSc1HUU';
   Future<User> createUser(
       String name, String password, String email, String age) async {
     final http.Response response = await http.post(url,
@@ -115,7 +115,7 @@ class NetworkHelper {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Failed to load user');
     }
   }
 
@@ -164,6 +164,47 @@ class NetworkHelper {
     } else {
       print('failed');
       throw Exception('Failed to change user email');
+    }
+  }
+
+  Future<User> changePassword(String password) async {
+    final http.Response response = await http.patch(url + '/me',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        },
+        body: jsonEncode(
+          <String, String>{
+            'password': password,
+          },
+        ));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return User.fromJson(json.decode(response.body));
+    } else {
+      print('failed');
+      throw Exception('Failed to change user password');
+    }
+  }
+
+  Future<User> logoutAll() async {
+    final http.Response response = await http.post(url + '/logoutAll',
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+        body: jsonEncode(
+          <String, String>{},
+        ));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to logout');
     }
   }
 }

@@ -1,22 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meetme/components/rounded_button.dart';
 import 'package:meetme/models/user.dart';
-import 'package:meetme/screens/personal_infos_screen.dart';
 import 'package:meetme/services/networking.dart';
 
-import '../constants.dart';
 import 'account_screen.dart';
 
-class ChangeNameScreen extends StatefulWidget {
-  static const id = 'change_name_screen';
+class ChangePasswordScreen extends StatefulWidget {
+  static const String id = 'change_password_screen';
+
   @override
-  _ChangeNameScreenState createState() => _ChangeNameScreenState();
+  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
 
-class _ChangeNameScreenState extends State<ChangeNameScreen> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Future<User> futureUser;
   NetworkHelper networkHelper = NetworkHelper();
-  final TextEditingController _controllername = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
 
   @override
   void initState() {
@@ -56,11 +56,12 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Icon(Icons.face),
+                              child: Icon(Icons.vpn_key),
                             ),
                           ),
                           TextSpan(
-                              text: 'Name', style: TextStyle(fontSize: 25.0)),
+                              text: 'Password',
+                              style: TextStyle(fontSize: 25.0)),
                         ],
                       ),
                     )),
@@ -68,10 +69,11 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
                   height: 16.0,
                 ),
                 TextFormField(
+                  obscureText: true,
                   textAlign: TextAlign.center,
-                  controller: _controllername,
+                  controller: _controllerPassword,
                   decoration: InputDecoration(
-                    hintText: ' ${snapshot.data.name}',
+                    hintText: '********',
                   ),
                 ),
                 RoundedButton(
@@ -87,15 +89,15 @@ class _ChangeNameScreenState extends State<ChangeNameScreen> {
                               width: 20,
                             ),
                             Expanded(
-                              child: Text('Name changed with success.'),
+                              child: Text('Password changed with success.'),
                             ),
                           ],
                         ),
                       ),
                     );
                     setState(() {
-                      futureUser =
-                          networkHelper.changeName(_controllername.text);
+                      futureUser = networkHelper
+                          .changePassword(_controllerPassword.text);
                     });
                   },
                 ),

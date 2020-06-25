@@ -47,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         tag: 'logo',
                         child: Container(
                           height: 150.0,
-                          child: Image.asset('images/logo.png'),
+                          child: Image.asset('images/orbit.png'),
                         ),
                       ),
                     ),

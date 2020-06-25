@@ -32,10 +32,10 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Meet Me'),
+          title: const Text('Orbit'),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.alternate_email),
+              icon: const Icon(Icons.account_circle),
               tooltip: 'My Account',
               onPressed: () {
                 Navigator.pushNamed(context, AccountScreen.id);

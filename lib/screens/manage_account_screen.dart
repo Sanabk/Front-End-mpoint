@@ -22,7 +22,7 @@ class _ManageAccountState extends State<ManageAccount> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Meet Me'),
+          title: const Text('Orbit'),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.account_circle),
