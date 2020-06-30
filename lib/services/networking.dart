@@ -9,7 +9,7 @@ class NetworkHelper {
   NetworkHelper();
   final String url = 'http://192.168.43.17:3000/users';
   final String token =
-      'yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWYyMDk0ZTIyYjM5NjQ0NzYzZjllM2UiLCJpYXQiOjE1OTI5MjA0NzR9.FJsIQeSD4ynir1ZGUl1uASjDLmge6VKBCYqTSSc1HUU';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZiOGIxYzNlZjE5Yzc0YTc3YTkzZjciLCJpYXQiOjE1OTM1NDM0NjJ9.eRVaYI7ZFrBb9T2k_OMyN6JMOnixz5xJ2dreHOmb3ho';
   Future<User> createUser(
       String name, String password, String email, String age) async {
     final http.Response response = await http.post(url,

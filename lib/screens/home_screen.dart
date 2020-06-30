@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meetme/components/app_bar.dart';
 import 'package:meetme/components/rounded_button.dart';
 import 'package:meetme/screens/current_location_screen.dart';
 import 'package:meetme/screens/send_location_screen.dart';
@@ -18,18 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Orbit'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.account_circle),
-              tooltip: 'My Account',
-              onPressed: () {
-                Navigator.pushNamed(context, AccountScreen.id);
-              },
-            ),
-          ],
-        ),
+        appBar: kAppBar(),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(12.0),

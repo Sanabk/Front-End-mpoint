@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:meetme/components/app_bar.dart';
 import 'package:meetme/models/user.dart';
-import 'package:meetme/services/location.dart';
+import 'package:meetme/services/locations.dart';
 import 'package:meetme/screens/account_screen.dart';
 
 class CurrentLocationScreen extends StatefulWidget {
@@ -15,21 +17,30 @@ class CurrentLocationScreen extends StatefulWidget {
 
 class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
   Completer<GoogleMapController> _controller = Completer();
-  double latitude = 35.7661918;
-  double longitude = 10.8252182;
+  double _originLatitude = 35.9035546, _originLongitude = 10.5437192;
+  Map<MarkerId, Marker> markers = {};
+  List<LatLng> polylineCoordinates = [];
+  PolylinePoints polylinePoints = PolylinePoints();
+  String googleAPiKey = "AIzaSyDt0B6vq-6Vz2XnehA_EbR8F7DPCuc1nqc";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getLocation();
+
+    /// origin marker
+    _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
+        BitmapDescriptor.defaultMarker);
+
+    /// destination marker
   }
 
   Future<dynamic> getLocation() async {
-    Location location = Location();
+    Locations location = Locations();
 
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longitude = location.longitude;
+    double latitude = location.latitude;
+    double longitude = location.longitude;
     print(latitude);
     print(longitude);
   }
@@ -42,36 +53,30 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: const Text('Orbit'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            tooltip: 'My Account',
-            onPressed: () {
-              Navigator.pushNamed(context, AccountScreen.id);
-            },
+    return SafeArea(
+      child: Scaffold(
+        appBar: kAppBar(),
+        body: GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(_originLatitude, _originLongitude),
+            zoom: 10,
           ),
-        ],
-      ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(35.7616379, 10.8045506),
-          zoom: 117,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          myLocationEnabled: true,
+          tiltGesturesEnabled: true,
+          compassEnabled: true,
+          scrollGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          markers: Set<Marker>.of(markers.values),
         ),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        myLocationEnabled: true,
-        trafficEnabled: true,
-        compassEnabled: true,
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('Send location'),
-        icon: Icon(Icons.my_location),
+//        floatingActionButton: FloatingActionButton.extended(
+//          onPressed: _goToTheLake,
+//          label: Text('Send location'),
+//          icon: Icon(Icons.my_location),
+//        ),
       ),
     );
   }
@@ -79,5 +84,12 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  }
+
+  _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
+    MarkerId markerId = MarkerId(id);
+    Marker marker =
+        Marker(markerId: markerId, icon: descriptor, position: position);
+    markers[markerId] = marker;
   }
 }

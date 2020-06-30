@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:meetme/components/app_bar.dart';
 import 'package:meetme/models/user.dart';
 import 'package:meetme/screens/welcome_screen.dart';
 import 'package:meetme/services/networking.dart';
@@ -21,18 +22,7 @@ class _ManageAccountState extends State<ManageAccount> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Orbit'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.account_circle),
-              tooltip: 'My Account',
-              onPressed: () {
-                Navigator.pushNamed(context, AccountScreen.id);
-              },
-            ),
-          ],
-        ),
+        appBar: kAppBar(),
         backgroundColor: Colors.white,
         // change the body to future with condition to get the
         // information of the current user

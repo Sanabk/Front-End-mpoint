@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meetme/components/app_bar.dart';
 import 'package:meetme/screens/personal_infos_screen.dart';
 import 'package:meetme/screens/security_login_screen.dart';
 
@@ -15,18 +16,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Orbit'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.account_circle),
-              tooltip: 'My Account',
-              onPressed: () {
-                Navigator.pushNamed(context, AccountScreen.id);
-              },
-            ),
-          ],
-        ),
+        appBar: kAppBar(),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Padding(
